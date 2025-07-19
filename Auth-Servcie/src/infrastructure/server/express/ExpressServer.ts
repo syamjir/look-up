@@ -13,7 +13,7 @@ export class ExpressServer {
     this.PORT = process.env.PORT || ''
     this.checkEnvAvailable()
     this.configureMiddleware()
-    this.configureRoutes()
+    // this.configureRoutes()
     this.startServer()
   }
 
@@ -27,9 +27,9 @@ export class ExpressServer {
     this.app.use(express.json())
   }
 
-  private configureRoutes(): void {
-    this.app.use('/auth', authRoutes)
-  }
+  // private configureRoutes(): void {
+  //   this.app.use('/auth', authRoutes)
+  // }
 
   private startServer(): void {
     this.app.listen(this.PORT, () => {
