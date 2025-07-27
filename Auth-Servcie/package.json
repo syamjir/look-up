@@ -7,6 +7,7 @@
     "lint": "eslint src"
   },
   "devDependencies": {
+    "@types/bcrypt": "^6.0.0",
     "@typescript-eslint/eslint-plugin": "^6.10.0",
     "@typescript-eslint/parser": "^6.10.0",
     "eslint": "^8.54.0",
@@ -15,6 +16,7 @@
     "typescript": "^5.2.2"
   },
   "dependencies": {
+    "bcrypt": "^6.0.0",
     "dotenv": "^17.2.0",
     "express": "^5.1.0",
     "mongoose": "^8.16.4"
