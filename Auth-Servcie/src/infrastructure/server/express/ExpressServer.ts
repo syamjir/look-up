@@ -1,6 +1,8 @@
 import dotenv from 'dotenv'
 import express, { Application } from 'express'
 // import { authRoutes } from './adapters/http/routes/auth.routes' // adjust the path
+import cookieParser from 'cookie-parser'
+import cors from 'cors'
 
 dotenv.config()
 
@@ -24,7 +26,10 @@ export class ExpressServer {
   }
 
   private configureMiddleware(): void {
+    // Global middlewares
     this.app.use(express.json())
+    this.app.use(cookieParser())
+    this.app.use(cors())
   }
 
   // private configureRoutes(): void {
