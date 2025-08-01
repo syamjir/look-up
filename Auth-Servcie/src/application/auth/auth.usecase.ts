@@ -9,7 +9,7 @@ import { createJwtService } from '../../shared/utils/jwt.service'
 export class AuthUseCase {
   constructor(private userRepo: UserRepository) {}
 
-  async Register(user: User) {
+  async register(user: User) {
     const hashed = await hashedPassword(user.password)
     const newUser = await this.userRepo.create({ ...user, password: hashed })
     return { id: newUser.id, email: newUser.email }
