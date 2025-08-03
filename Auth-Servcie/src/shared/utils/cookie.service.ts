@@ -1,6 +1,6 @@
 import { Response, Request } from 'express'
 
-export function sendTokenAsCookie(res: Response, req: Request, token: string) {
+export function sendTokenAsCookie(req: Request, res: Response, token: string) {
   const cookieExpiresIn = Number(process.env.JWT_COOKIE_EXPIRES_IN)
   res.cookie('jwt', token, {
     expires: new Date(Date.now() + cookieExpiresIn * 24 * 60 * 60 * 1000),
