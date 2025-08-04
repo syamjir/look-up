@@ -20,7 +20,7 @@ export class AuthUseCase {
     if (!user) throw new Error('User not found')
     const isValid = await comparePassword(password, user.password)
     if (!isValid) throw new Error('Invalid credentials')
-    const token = await createJwtService(user).createJwtToken
+    const token = await createJwtService(user).createJwtToken()
     if (!token) throw new Error('Failed to create token')
     return { token }
   }
