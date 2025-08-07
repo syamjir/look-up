@@ -1,0 +1,19 @@
+version: '3.9'
+
+services:
+  mongodb:
+    image: mongo
+    ports:
+      - '27017:27017'
+
+  backend:
+    build: ./Auth-Service
+    ports:
+      - '5000:5000'
+    env_file:
+      - ./Auth-Service/env/cookie.env
+      - ./Auth-Service/env/express.env
+      - ./Auth-Service/env/jwt.env
+      - ./Auth-Service/env/mongo.env
+    depends_on:
+      - mongodb
