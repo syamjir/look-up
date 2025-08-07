@@ -1,6 +1,6 @@
 import dotenv from 'dotenv'
 import express, { Application } from 'express'
-// import { authRoutes } from './adapters/http/routes/auth.routes' // adjust the path
+import authRoutes from '../../../adapters/http/routes/auth.routes'
 import cookieParser from 'cookie-parser'
 import cors from 'cors'
 
@@ -15,7 +15,7 @@ export class ExpressServer {
     this.PORT = process.env.PORT || ''
     this.checkEnvAvailable()
     this.configureMiddleware()
-    // this.configureRoutes()
+    this.configureRoutes()
     this.startServer()
   }
 
@@ -32,9 +32,9 @@ export class ExpressServer {
     this.app.use(cors())
   }
 
-  // private configureRoutes(): void {
-  //   this.app.use('/auth', authRoutes)
-  // }
+  private configureRoutes(): void {
+    this.app.use('/api/auth', authRoutes)
+  }
 
   private startServer(): void {
     this.app.listen(this.PORT, () => {
