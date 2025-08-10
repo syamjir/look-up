@@ -20,8 +20,7 @@ export class MongoUserRepository implements UserRepository {
     return await userModel.findByIdAndUpdate(id, payload, { new: true })
   }
 
-  async deleteUser(id: string): Promise<boolean> {
-    const deletedUser = await userModel.findByIdAndDelete(id)
-    return deletedUser ? true : false
+  async deleteUser(id: string): Promise<User | null> {
+    return await userModel.findByIdAndDelete(id)
   }
 }
