@@ -8,6 +8,8 @@ import helmet from 'helmet'
 import mongoSanitize from 'express-mongo-sanitize'
 import { xss } from 'express-xss-sanitizer'
 import compression from 'compression'
+import { Request, Response, NextFunction } from 'express'
+import { IAppError } from '../../../shared/errors/error.entity'
 
 dotenv.config()
 
@@ -22,6 +24,7 @@ export class ExpressServer {
     this.configureMiddleware()
     this.configureRoutes()
     this.startServer()
+    this.globalErrorHandling()
   }
 
   private checkEnvAvailable(): void {
@@ -57,6 +60,32 @@ export class ExpressServer {
     this.app.listen(this.PORT, () => {
       console.log(`✅ Server running on port ${this.PORT}`)
     })
+  }
+  private globalErrorHandling(): void {
+    this.app.use(
+      (err: IAppError, req: Request, res: Response, _next: NextFunction) => {
+        // If no statusCode is set, treat it as 500
+        const statusCode = err.statusCode || 500
+        const status = err.status || 'error'
+
+        // API routes
+        if (req.originalUrl.startsWith('/api')) {
+          if (err.isOperational) {
+            return res.status(statusCode).json({
+              status,
+              message: err.message,
+            })
+          }
+
+          // Unknown or programming error:don't leak error details
+          console.error('ERROR 💥', err)
+          return res.status(500).json({
+            status: 'error',
+            message: 'Something went very wrong!',
+          })
+        }
+      },
+    )
   }
 }
 
