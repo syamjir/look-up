@@ -1,4 +1,6 @@
-export class AppError extends Error {
+import { IAppError } from './error.entity'
+
+export class AppError extends Error implements IAppError {
   statusCode: number
   status: string
   isOperational: boolean
