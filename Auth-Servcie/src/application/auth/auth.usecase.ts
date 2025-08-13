@@ -1,5 +1,6 @@
 import { User } from '../../domain/entities/user.entity'
 import { UserRepository } from '../../domain/repositories/user.repository'
+import { AppError } from '../../shared/errors/app.error'
 import {
   comparePassword,
   hashedPassword,
@@ -20,8 +21,19 @@ export class AuthUseCase {
     if (!user) throw new Error('User not found')
     const isValid = await comparePassword(password, user.password)
     if (!isValid) throw new Error('Invalid credentials')
-    const token = await createJwtService(user).createJwtToken()
+    const token = await createJwtService().createJwtToken(user)
     if (!token) throw new Error('Failed to create token')
     return { token }
+  }
+  async verifyToken(token: string) {
+    if (!token) throw new AppError('Token missing', 401)
+    try {
+      const decoded = await createJwtService().decodeJwtToken(token)
+      const currentUser = await this.userRepo.findById(decoded.id)
+      if (!currentUser) throw new AppError('User no longer exists', 401)
+      return { id: currentUser.id, email: currentUser.email }
+    } catch (err) {
+      throw new AppError('Invalid token', 401)
+    }
   }
 }
