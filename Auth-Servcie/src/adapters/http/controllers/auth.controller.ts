@@ -1,7 +1,8 @@
-import { Request, Response } from 'express'
+import { Request, Response, NextFunction } from 'express'
 import { AuthUseCase } from '../../../application/auth/auth.usecase'
 import { MongoUserRepository } from '../../../infrastructure/database/repositories/user.mongo.repository'
 import { sendTokenAsCookie } from '../../../shared/utils/cookie.service'
+import { AppError } from '../../../shared/errors/app.error'
 
 const userRepo = new MongoUserRepository()
 const authUseCase = new AuthUseCase(userRepo)
@@ -23,5 +24,18 @@ export const login = async (req: Request, res: Response) => {
     res.status(200).json(token)
   } catch (err) {
     res.status(401).json({ error: err })
+  }
+}
+
+export const verifyToken = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const data = await authUseCase.verifyToken(req.body)
+    res.json(data)
+  } catch (err) {
+    next(new AppError('Invalid token', 401))
   }
 }
