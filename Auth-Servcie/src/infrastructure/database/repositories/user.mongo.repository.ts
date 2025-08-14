@@ -11,4 +11,9 @@ export class MongoUserRepository implements UserRepository {
   async findByEmail(email: string): Promise<User | null> {
     return await UserModel.findOne({ email })
   }
+
+  async findById(id: string): Promise<User | null> {
+    // axios call to the user service
+    return await UserModel.findById(id)
+  }
 }
