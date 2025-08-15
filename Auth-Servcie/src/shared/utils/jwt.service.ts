@@ -3,11 +3,11 @@ import jwt from 'jsonwebtoken'
 
 class JwtService {
   private JWT_SECRET = process.env.JWT_SECRET || 'your_jwt_secret'
-  constructor(private user: User) {}
+  constructor() {}
 
-  async createJwtToken(): Promise<string> {
+  async createJwtToken(user: User): Promise<string> {
     const token = jwt.sign(
-      { id: this.user.id, email: this.user.email },
+      { id: user.id, email: user.email },
       this.JWT_SECRET,
       {
         expiresIn: '1h',
@@ -27,6 +27,6 @@ class JwtService {
   }
 }
 
-export function createJwtService(user: User) {
-  return new JwtService(user)
+export function createJwtService() {
+  return new JwtService()
 }
