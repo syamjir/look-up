@@ -1,0 +1,8 @@
+.git
+node_modules
+.husky
+backend
+backend-1
+.env*
+.vscode
+.commitlintrc.json
